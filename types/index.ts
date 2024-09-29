@@ -1,27 +1,63 @@
 import { z } from "zod";
 
-//  client model
-const Client = z.object({
-  id: z.string(),
-  name: z.string(),
-  lastname: z.string(),
-  dni: z.string(),
-  email: z.string(),
-  phone: z.string(),
-  address: z.string(),
-  city: z.string(),
-  state: z.string(),
-  observations: z.string(),
-});
-export type Client = z.infer<typeof Client>;
-export type ClientForm = Omit<Client, "id">;
-
 //  category model
-const Category = z.object({
-  id: z.string(),
+const CategorySchema = z.object({
+  _id: z.string(),
   name: z.string(),
+  description: z.string(),
   active: z.string(),
+  products: z.array(z.string()),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
+export const CategorySelect = z.array(
+  CategorySchema.pick({
+    _id: true,
+    name: true,
+    description: true,
+    active: true,
+    products: true,
+    createdAt: true,
+    updatedAt: true,
+  })
+);
+export type Category = z.infer<typeof CategorySchema>;
+export type CategoryForm = Pick<Category, "name" | "active" | "description">;
+
+// product model
+const ProductSchema = z.object({
+  _id: z.string(),
+  code: z.string(),
+  name: z.string(),
+  price: z.number(),
+  costPrice: z.number(),
+  categoryId: CategorySchema.or(z.string()),
   description: z.string(),
 });
-export type Category = z.infer<typeof Category>;
-export type CategoryForm = Omit<Category, "id">;
+
+export const ProductSelect = z.array(
+  ProductSchema.pick({
+    _id: true,
+    name: true,
+    code: true,
+    price: true,
+    costPrice: true,
+    description: true,
+  })
+);
+export type Product = z.infer<typeof ProductSchema>;
+export type ProductForm = Pick<
+  Product,
+  "code" | "name" | "price" | "costPrice" | "categoryId" | "description"
+>;
+
+// stock model
+const StockChema = z.object({
+  id: z.string(),
+  productId: z.string(),
+  cuantity: z.number(),
+});
+
+export type Stock = z.infer<typeof StockChema>;
+export type StockForm = Pick<Stock, "productId" | "cuantity">;
