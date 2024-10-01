@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 //  category model
-const CategorySchema = z.object({
+export const CategorySchema = z.object({
   _id: z.string(),
   name: z.string(),
   description: z.string(),
@@ -33,6 +33,7 @@ const ProductSchema = z.object({
   price: z.number(),
   costPrice: z.number(),
   categoryId: CategorySchema.or(z.string()),
+  stock: z.string(),
   description: z.string(),
 });
 
@@ -55,9 +56,16 @@ export type ProductForm = Pick<
 // stock model
 const StockChema = z.object({
   id: z.string(),
-  productId: z.string(),
-  cuantity: z.number(),
+  productId: ProductSchema.or(z.string()),
+  quantity: z.number(),
 });
 
+export const StockSelect = z.array(
+  StockChema.pick({
+    id: true,
+    productId: true,
+    quantity: true,
+  })
+);
 export type Stock = z.infer<typeof StockChema>;
-export type StockForm = Pick<Stock, "productId" | "cuantity">;
+export type StockForm = Pick<Stock, "productId" | "quantity">;

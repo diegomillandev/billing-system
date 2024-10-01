@@ -1,18 +1,15 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document, Types, PopulatedDoc } from "mongoose";
+import { IProduct } from "./Product.model";
 
 export interface IStock extends Document {
-  productId: Types.ObjectId;
-  cuantity: number;
+  productId: PopulatedDoc<IProduct & Document>;
+  quantity: number;
 }
 
 const StockSchema: Schema = new Schema(
   {
-    productId: {
-      type: Types.ObjectId,
-      ref: "Product",
-      required: true,
-    },
-    cuantity: {
+    productId: { type: Types.ObjectId, ref: "Product", required: true },
+    quantity: {
       type: Number,
       required: true,
     },

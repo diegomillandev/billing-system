@@ -37,10 +37,9 @@ export async function GET() {
   await connectDB();
 
   try {
-    const products = await Product.find()
-      .populate("categoryId")
-      .populate("categoryId");
+    const products = await Product.find().populate("categoryId");
 
+    console.log(products);
     return NextResponse.json(products, { status: 200 });
   } catch (error) {
     console.log(error);

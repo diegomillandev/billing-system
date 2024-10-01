@@ -6,23 +6,25 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Loader } from "@/components/Loader";
-import { CategoryForm } from "@/types";
+import { Category, CategoryForm } from "@/types";
 
 interface Props {
   handleReload: () => void;
+  categoryEdit: Category;
+  clearCategoryEdit: () => void;
 }
 
-export function ModalAddCategory(props: Props) {
+export function ModalEditCategory(props: Props) {
   const [loading, setLoading] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const query = searchParams.get("newCategory");
+  const querySearch = searchParams.get("editCategory");
 
   const initial: CategoryForm = {
-    name: "",
-    description: "",
-    active: "active",
+    name: props.categoryEdit.name || "",
+    description: props.categoryEdit.description || "",
+    active: props.categoryEdit.active || "active",
   };
 
   const {
@@ -35,15 +37,15 @@ export function ModalAddCategory(props: Props) {
   const closeModal = () => {
     reset();
     props.handleReload();
+    props.clearCategoryEdit();
     const url = `${pathname}`;
     router.push(url);
   };
-
   const onSubmit = async (data: CategoryForm) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/categories", {
-        method: "POST",
+      const response = await fetch(`/api/categories/${querySearch}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
@@ -65,7 +67,7 @@ export function ModalAddCategory(props: Props) {
     }
   };
 
-  if (query === "true") {
+  if (querySearch !== null) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-400/30 flex items-center justify-center p-4">
         <div className="bg-backgroundBox rounded w-full max-w-[550px] max-h-[90vh] overflow-y-auto p-6 relative">
@@ -154,7 +156,7 @@ export function ModalAddCategory(props: Props) {
                 {!loading ? (
                   <>
                     <Plus size={20} />
-                    <span>Add category</span>
+                    <span>Edit Category</span>
                   </>
                 ) : (
                   <Loader />

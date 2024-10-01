@@ -1,5 +1,5 @@
 import { HeaderPage } from "@/components/Shared/HeaderPage";
-import { ModalAddCategory } from "./components/ModalAddCategory";
+import { WrapperCards } from "./components/WrapperCards";
 const routes = [
   { name: "Home", href: "/" },
   { name: "Categories", href: "/categories" },
@@ -13,7 +13,7 @@ export default function CategoriesPage() {
         buttonText="Add category"
         query="newCategory=true"
       />
-      <ModalAddCategory />
+      <WrapperCards />
     </>
   );
 }

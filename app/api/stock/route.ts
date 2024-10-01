@@ -20,8 +20,8 @@ export async function POST(req: Request) {
     const stockExits = await Stock.findById(productExits.stock);
 
     if (stockExits) {
-      stockExits.cuantity =
-        Number(stockExits.cuantity) + Number(dataStock.cuantity);
+      stockExits.quantity =
+        Number(stockExits.quantity) + Number(dataStock.quantity);
       await stockExits.save();
       return NextResponse.json({ message: "Stock updated" }, { status: 200 });
     }
@@ -32,6 +32,17 @@ export async function POST(req: Request) {
     await Promise.allSettled([stock.save(), productExits.save()]);
 
     return NextResponse.json({ message: "Stock created" }, { status: 201 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: "An error occurred" }, { status: 500 });
+  }
+}
+
+export async function GET() {
+  await connectDB();
+  try {
+    const stocks = await Stock.find().populate("productId");
+    return NextResponse.json(stocks, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: "An error occurred" }, { status: 500 });

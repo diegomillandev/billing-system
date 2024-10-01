@@ -20,7 +20,7 @@ type StateMapType = {
 };
 
 export function ModalAddStock() {
-  const [cuantity, setCuantity] = useState(0);
+  const [quantity, setQuantity] = useState(0);
   const [loading, setLoading] = useState(false);
   const [productId, setProductId] = useState("");
   const [showProduct, setShowProduct] = useState<Product[]>([]);
@@ -34,7 +34,7 @@ export function ModalAddStock() {
 
   const initial: StockForm = {
     productId: "",
-    cuantity: cuantity,
+    quantity: quantity,
   };
 
   const {
@@ -55,7 +55,7 @@ export function ModalAddStock() {
     const { name, value } = e.target;
 
     const stateMap: StateMapType = {
-      cuantity: setCuantity,
+      quantity: setQuantity,
     };
     const setter = stateMap[name];
 
@@ -65,7 +65,7 @@ export function ModalAddStock() {
   };
 
   const resetSetters = () => {
-    setCuantity(0);
+    setQuantity(0);
     setProductId("");
     setShowProduct([]);
   };
@@ -97,7 +97,7 @@ export function ModalAddStock() {
     setLoading(true);
     const dataStock = {
       ...data,
-      cuantity: cuantity,
+      quantity: quantity,
     };
     console.log(dataStock);
 
@@ -203,7 +203,7 @@ export function ModalAddStock() {
             <div className="">
               <label
                 htmlFor="soldPrice"
-                className={`block ${errors.cuantity && "text-red-500"}`}
+                className={`block ${errors.quantity && "text-red-500"}`}
               >
                 Cuantity<span className="text-xs">{` (units)`}</span>
               </label>
@@ -212,14 +212,14 @@ export function ModalAddStock() {
                 id="soldPrice"
                 className={`mt-1 block w-full rounded-sm border py-2 pr-4 font-light focus:outline-none bg-inputBackground placeholder:text-gray-500 placeholder:font-light text-right
                       ${
-                        errors.cuantity
+                        errors.quantity
                           ? "border-red-500"
                           : "border-colorBorder focus:border-blue-700"
                       }
                   `}
                 placeholder="Enter client DNI"
-                {...register("cuantity", { required: true })}
-                value={cuantity}
+                {...register("quantity", { required: true })}
+                value={quantity}
                 onChange={(e) => setNumber(e)}
               />
             </div>
