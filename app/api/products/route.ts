@@ -38,8 +38,6 @@ export async function GET() {
 
   try {
     const products = await Product.find().populate("categoryId");
-
-    console.log(products);
     return NextResponse.json(products, { status: 200 });
   } catch (error) {
     console.log(error);

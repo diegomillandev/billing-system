@@ -60,7 +60,7 @@ export function WrapperCards() {
             <p className="text-colorText">No categories found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {categories.map((category) => (
               <CardCategory
                 key={category._id}

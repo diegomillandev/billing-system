@@ -1,5 +1,6 @@
 import { HeaderPage } from "@/components/Shared/HeaderPage";
 import { ModalAddProduct } from "./components/ModalAddProduct";
+import { WrapperProducts } from "./components/WrapperProducts";
 
 const routes = [
   { name: "Home", href: "/" },
@@ -16,6 +17,7 @@ export default function ProductsPage() {
         buttonText="Create Product"
         query="newProduct=true"
       />
+      <WrapperProducts />
       <ModalAddProduct />
     </>
   );

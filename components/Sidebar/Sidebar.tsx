@@ -12,7 +12,7 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`w-72 bg-backgroudSidebar fixed h-full left-0 top-0 -translate-x-full transition-transform duration-300 ease-in-out z-30
+      className={`w-72 bg-backgroudSidebar fixed h-full left-0 top-0 -translate-x-full transition-transform duration-300 ease-in-out z-30 sidebarClose
       ${isOpenSidebar ? "translate-x-0" : "lg:translate-x-0"}
         `}
     >

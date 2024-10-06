@@ -45,6 +45,7 @@ export const ProductSelect = z.array(
     price: true,
     costPrice: true,
     description: true,
+    categoryId: true,
   })
 );
 export type Product = z.infer<typeof ProductSchema>;

@@ -28,8 +28,8 @@ export function CardCategory({ category, handleCategoryEdit }: Props) {
       <p className="text-sm font-extralight flex-1">
         <span>{category.description}</span>
       </p>
-      <div className="mt-5">
-        <span className="text-sm">{format(category.updatedAt)}</span>
+      <div className="mt-5 flex items-center">
+        <span className="text-sm font-light">{format(category.updatedAt)}</span>
       </div>
       <div className="absolute bottom-4 right-4 flex gap-x-3">
         <HoverTitle text="Edit">
