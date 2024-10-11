@@ -1,5 +1,4 @@
 import { HeaderPage } from "@/components/Shared/HeaderPage";
-import { ModalAddProduct } from "./components/ModalAddProduct";
 import { WrapperProducts } from "./components/WrapperProducts";
 
 const routes = [
@@ -18,7 +17,6 @@ export default function ProductsPage() {
         query="newProduct=true"
       />
       <WrapperProducts />
-      <ModalAddProduct />
     </>
   );
 }

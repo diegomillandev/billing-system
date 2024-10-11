@@ -16,7 +16,7 @@ export function CardCategory({ category, handleCategoryEdit }: Props) {
   const handleEditCategory = () => {
     const newUrl = `${pathname}?editCategory=${category._id}`;
     router.push(newUrl);
-    handleCategoryEdit(category);
+    handleCategoryEdit(category!);
   };
 
   return (

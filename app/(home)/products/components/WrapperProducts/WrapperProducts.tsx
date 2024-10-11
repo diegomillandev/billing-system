@@ -6,11 +6,27 @@ import { Product, ProductSelect } from "@/types";
 import { Loader } from "@/components/Loader";
 import { useSearch } from "@/hooks/useSearch";
 import { Trash2 } from "lucide-react";
+import { ModalAddProduct } from "../ModalAddProduct";
+import { ModalEditProduct } from "../ModalEditProduct";
 
 export function WrapperProducts() {
+  const [reload, setReload] = useState(false);
+  const [editProduct, setEditProduct] = useState<Product>();
   const { search, setSearch, setDataProcesing, filteredData } =
     useSearch<Product>();
   const [loading, setLoading] = useState(true);
+
+  const handleEditProduct = (product: Product) => {
+    setEditProduct(product);
+  };
+
+  const handleReload = () => {
+    setReload(!reload);
+  };
+
+  const clearProductEdit = () => {
+    setEditProduct(undefined);
+  };
 
   const fetchProducts = async () => {
     if (!filteredData.length) setLoading(true);
@@ -29,7 +45,7 @@ export function WrapperProducts() {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [reload]);
 
   if (loading) {
     return (
@@ -63,12 +79,24 @@ export function WrapperProducts() {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {filteredData.map((product) => (
-                <CardProduct key={product._id} product={product} />
+                <CardProduct
+                  key={product._id}
+                  product={product}
+                  handleEditProduct={handleEditProduct}
+                />
               ))}
             </div>
           </>
         )}
       </main>
+      <ModalAddProduct />
+      {editProduct && (
+        <ModalEditProduct
+          clearProductEdit={clearProductEdit}
+          editProduct={editProduct}
+          handleReload={handleReload}
+        />
+      )}
     </>
   );
 }

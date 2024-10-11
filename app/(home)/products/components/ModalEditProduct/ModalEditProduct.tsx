@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Plus, X } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Category, CategorySelect, ProductForm } from "@/types";
+import { Category, CategorySelect, Product, ProductForm } from "@/types";
 import {
   ChangeEvent,
   Dispatch,
@@ -18,23 +18,31 @@ type StateMapType = {
   [key: string]: Dispatch<SetStateAction<number>>;
 };
 
-export function ModalAddProduct() {
-  const [price, setPrice] = useState(0);
-  const [costPrice, setCostPrice] = useState(0);
+interface ModaleditProductProps {
+  editProduct: Product;
+  clearProductEdit: () => void;
+  handleReload: () => void;
+}
+
+export function ModalEditProduct(props: ModaleditProductProps) {
+  const [price, setPrice] = useState(props.editProduct.price);
+  const [costPrice, setCostPrice] = useState(props.editProduct.costPrice);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const query = searchParams.get("newProduct");
+  const query = searchParams.get("editProduct");
+
+  const categoryId: Category = props.editProduct.categoryId as Category;
 
   const initial: ProductForm = {
-    code: "",
-    name: "",
+    code: props.editProduct.code,
+    name: props.editProduct.name,
     price: price,
     costPrice: costPrice,
-    categoryId: "",
-    description: "",
+    categoryId: categoryId._id,
+    description: props.editProduct.description,
   };
 
   const {
@@ -45,6 +53,8 @@ export function ModalAddProduct() {
   } = useForm({ defaultValues: initial });
 
   const closeModal = () => {
+    props.handleReload();
+    props.clearProductEdit();
     reset();
     const url = `${pathname}`;
     router.push(url);
@@ -63,11 +73,6 @@ export function ModalAddProduct() {
     if (setter) {
       setter(value === "" ? 0 : parseInt(value));
     }
-  };
-
-  const resetSetters = () => {
-    setPrice(0);
-    setCostPrice(0);
   };
 
   const getCategories = async () => {
@@ -93,10 +98,9 @@ export function ModalAddProduct() {
       price: price,
       costPrice: costPrice,
     };
-
     try {
-      const response: Response = await fetch("/api/products", {
-        method: "POST",
+      const response: Response = await fetch(`/api/products/${query}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -104,11 +108,13 @@ export function ModalAddProduct() {
       });
       const { message } = await response.json();
       if (response.ok) {
+        props.handleReload();
         setLoading(false);
         toast.success(message);
         reset();
         const url = `${pathname}`;
         router.push(url);
+        props.clearProductEdit();
       } else {
         setLoading(false);
         toast.error(message);
@@ -117,10 +123,9 @@ export function ModalAddProduct() {
       console.error(error);
     }
     reset();
-    resetSetters();
   };
 
-  if (query === "true") {
+  if (query) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-400/30 flex items-center justify-center p-4">
         <div className="bg-backgroundBox rounded w-full max-w-[650px] max-h-[90vh] overflow-y-auto p-6 relative">
@@ -242,6 +247,7 @@ export function ModalAddProduct() {
                       }
                   `}
                 {...register("categoryId", { required: true })}
+                defaultValue={initial.categoryId as string}
               >
                 <option value="" disabled>
                   Select category
@@ -281,7 +287,7 @@ export function ModalAddProduct() {
                 {!loading ? (
                   <>
                     <Plus size={20} />
-                    <span>Add Product</span>
+                    <span>Edit Product</span>
                   </>
                 ) : (
                   <Loader />

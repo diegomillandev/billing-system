@@ -16,6 +16,9 @@
   --color-text: #1a1e21;
   --color-border: #e5e7eb;
   --input-background: #f0f2f5;
+
+  /* hovers */
+  --hover-buttons: #f0f2f5;
 }
 
 .dark {
@@ -28,6 +31,7 @@
   --color-text: #e5e7eb;
   --color-border: #364250;
   --input-background: #354250;
+  --hover-buttons: #354250;
 }
 body {
   color: var(--color-text);

@@ -1,10 +1,21 @@
 import { Category, Product } from "@/types";
 import { formatPrice } from "@/utils";
+import { Settings } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 interface Props {
   product?: Product;
+  handleEditProduct: (product: Product) => void;
 }
-export function CardProduct({ product }: Props) {
+export function CardProduct({ product, handleEditProduct }: Props) {
+  const pathname = usePathname();
+  const router = useRouter();
   const nameCategory: Category = product?.categoryId as Category;
+
+  const handleEdit = () => {
+    const newUrl = `${pathname}?editProduct=${product?._id}`;
+    router.push(newUrl);
+    handleEditProduct(product!);
+  };
 
   return (
     <div className=" relative bg-backgroundBox border border-colorBorder flex flex-col p-4">
@@ -27,7 +38,14 @@ export function CardProduct({ product }: Props) {
           Price: $<span>{formatPrice(Number(product?.price))}</span>
         </span>
       </div>
-      <div className="absolute bottom-4 right-4 flex gap-x-3"></div>
+      <div className="absolute bottom-2 right-2 group">
+        <button
+          className="text-colorText hover:bg-hoverButtons p-3 rounded-full"
+          onClick={handleEdit}
+        >
+          <Settings size={24} className="text-colorText" />
+        </button>
+      </div>
     </div>
   );
 }
