@@ -35,8 +35,8 @@ export function WrapperProducts() {
       const data = ProductSelect.safeParse(await response.json());
       if (data.success) {
         setDataProcesing(data.data as Product[]);
-        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -56,7 +56,7 @@ export function WrapperProducts() {
   }
   return (
     <>
-      <main className="mt-10">
+      <main className="mt-5">
         <div className="relative w-12/12 md:w-2/4 mb-5 flex items-center gap-x-2">
           <input
             type="text"
@@ -89,7 +89,7 @@ export function WrapperProducts() {
           </>
         )}
       </main>
-      <ModalAddProduct />
+      <ModalAddProduct handleReload={handleReload} />
       {editProduct && (
         <ModalEditProduct
           clearProductEdit={clearProductEdit}

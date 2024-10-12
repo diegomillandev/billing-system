@@ -1,5 +1,5 @@
 import { HeaderPage } from "@/components/Shared/HeaderPage";
-import { ModalAddStock } from "./components/ModalAddStock";
+import { TableStock } from "./components/TableStock";
 
 const routes = [
   { name: "Home", href: "/" },
@@ -15,7 +15,7 @@ export default function StockPage() {
         buttonText="Add stock"
         query="newStock=true"
       />
-      <ModalAddStock />
+      <TableStock />
     </>
   );
 }

@@ -18,7 +18,11 @@ type StateMapType = {
   [key: string]: Dispatch<SetStateAction<number>>;
 };
 
-export function ModalAddProduct() {
+interface ModalAddProductProps {
+  handleReload: () => void;
+}
+
+export function ModalAddProduct(props: ModalAddProductProps) {
   const [price, setPrice] = useState(0);
   const [costPrice, setCostPrice] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -45,6 +49,7 @@ export function ModalAddProduct() {
   } = useForm({ defaultValues: initial });
 
   const closeModal = () => {
+    props.handleReload();
     reset();
     const url = `${pathname}`;
     router.push(url);
@@ -107,6 +112,7 @@ export function ModalAddProduct() {
         setLoading(false);
         toast.success(message);
         reset();
+        closeModal();
         const url = `${pathname}`;
         router.push(url);
       } else {

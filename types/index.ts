@@ -56,16 +56,18 @@ export type ProductForm = Pick<
 
 // stock model
 const StockChema = z.object({
-  id: z.string(),
+  _id: z.string(),
   productId: ProductSchema.or(z.string()),
   quantity: z.number(),
+  sold: z.number(),
 });
 
 export const StockSelect = z.array(
   StockChema.pick({
-    id: true,
+    _id: true,
     productId: true,
     quantity: true,
+    sold: true,
   })
 );
 export type Stock = z.infer<typeof StockChema>;

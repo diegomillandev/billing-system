@@ -4,6 +4,7 @@ import { IProduct } from "./Product.model";
 export interface IStock extends Document {
   productId: PopulatedDoc<IProduct & Document>;
   quantity: number;
+  sold: number;
 }
 
 const StockSchema: Schema = new Schema(
@@ -12,6 +13,10 @@ const StockSchema: Schema = new Schema(
     quantity: {
       type: Number,
       required: true,
+    },
+    sold: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

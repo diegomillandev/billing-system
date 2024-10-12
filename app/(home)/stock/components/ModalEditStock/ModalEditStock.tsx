@@ -3,14 +3,8 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Plus, X } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Product, ProductSelect, StockForm } from "@/types";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { Product, Stock, StockForm } from "@/types";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader } from "@/components/Loader";
 import { formatPrice } from "@/utils";
@@ -21,24 +15,32 @@ type StateMapType = {
 
 interface ModalAddStockProps {
   handleReload: () => void;
+  editStock: Stock;
+  handleReset: () => void;
 }
 
-export function ModalAddStock(props: ModalAddStockProps) {
-  const [quantity, setQuantity] = useState(0);
+export function ModalEditStock({
+  handleReload,
+  editStock,
+  handleReset,
+}: ModalAddStockProps) {
+  const [quantity, setQuantity] = useState(editStock.quantity);
   const [loading, setLoading] = useState(false);
-  const [productId, setProductId] = useState("");
-  const [showProduct, setShowProduct] = useState<Product[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [showProduct, setShowProduct] = useState<Product[]>(
+    editStock.productId && typeof editStock.productId !== "string"
+      ? [editStock.productId]
+      : []
+  );
 
   // routes and params
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const query = searchParams.get("newStock");
+  const searchParams = useSearchParams();
+  const query = searchParams.get("editStock");
 
   const initial: StockForm = {
-    productId: "",
-    quantity: quantity,
+    productId: showProduct[0]?._id || "",
+    quantity: editStock.quantity,
   };
 
   const {
@@ -50,10 +52,11 @@ export function ModalAddStock(props: ModalAddStockProps) {
 
   const closeModal = () => {
     reset();
-    props.handleReload();
+    handleReset();
+    handleReload();
     const url = `${pathname}`;
     router.push(url);
-    resetSetters();
+    setShowProduct([]);
   };
 
   const setNumber = (e: ChangeEvent<HTMLInputElement>) => {
@@ -69,50 +72,19 @@ export function ModalAddStock(props: ModalAddStockProps) {
     }
   };
 
-  const resetSetters = () => {
-    setQuantity(0);
-    setProductId("");
-    setShowProduct([]);
-  };
-
-  const getProduts = async () => {
-    try {
-      const response = await fetch("/api/products");
-      const dataResponse = ProductSelect.safeParse(await response.json());
-      if (dataResponse.success) {
-        setProducts(dataResponse.data as Product[]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getProduts();
-  }, []);
-
-  useEffect(() => {
-    if (productId) {
-      const product = products.filter((product) => product._id === productId);
-      setShowProduct(product);
-    }
-  }, [productId]);
-
-  const onSubmit = async (data: StockForm) => {
+  const onSubmit = async () => {
     setLoading(true);
     const dataStock = {
-      ...data,
       quantity: quantity,
     };
-    console.log(dataStock);
 
     try {
-      const response: Response = await fetch("/api/stock", {
-        method: "POST",
+      const response: Response = await fetch(`/api/stock/${query}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(dataStock),
       });
       const { message } = await response.json();
       if (response.ok) {
@@ -130,10 +102,9 @@ export function ModalAddStock(props: ModalAddStockProps) {
       console.error(error);
     }
     reset();
-    resetSetters();
   };
 
-  if (query === "true") {
+  if (query) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-400/30 flex items-center justify-center p-4">
         <div className="bg-backgroundBox rounded w-full max-w-[450px] max-h-[90vh] overflow-y-auto p-6 relative">
@@ -157,55 +128,35 @@ export function ModalAddStock(props: ModalAddStockProps) {
               >
                 Product
               </label>
-              <select
-                id="categoryId"
-                className={`mt-1 block w-full rounded-sm border py-2 ps-4 focus:outline-none bg-inputBackground placeholder:text-gray-500 placeholder:font-light 
-                      ${
-                        errors.productId
-                          ? "border-red-500"
-                          : "border-colorBorder focus:border-blue-700"
-                      }
-                  `}
-                {...register("productId", { required: true })}
-                value={productId}
-                onChange={(e) => setProductId(e.target.value)}
-              >
-                <option value="">Select product</option>
-                {products.map((product) => (
-                  <option key={product._id} value={product._id}>
-                    {product.code}
-                  </option>
+              {showProduct &&
+                showProduct.map((product) => (
+                  <div
+                    key={product._id}
+                    className="border border-colorBorder p-2 flex flex-col gap-y-1 mt-2"
+                  >
+                    <p className="font-semibold text-sm">
+                      Product:{" "}
+                      <span className="font-extralight">{product.name}</span>
+                    </p>
+                    <p className="font-semibold text-sm">
+                      Code:{" "}
+                      <span className="font-extralight">{product.code}</span>
+                    </p>
+                    <p className="font-semibold text-sm">
+                      Price:{" "}
+                      <span className="font-extralight">
+                        ${formatPrice(product.price)}
+                      </span>
+                    </p>
+                    <p className="font-semibold text-sm">
+                      Cost Price:{" "}
+                      <span className="font-extralight">
+                        ${formatPrice(product.costPrice)}
+                      </span>
+                    </p>
+                  </div>
                 ))}
-              </select>
             </div>
-            {showProduct &&
-              showProduct.map((product) => (
-                <div
-                  key={product._id}
-                  className="border border-colorBorder p-2 flex flex-col gap-y-1"
-                >
-                  <p className="font-semibold text-sm">
-                    Product:{" "}
-                    <span className="font-extralight">{product.name}</span>
-                  </p>
-                  <p className="font-semibold text-sm">
-                    Code:{" "}
-                    <span className="font-extralight">{product.code}</span>
-                  </p>
-                  <p className="font-semibold text-sm">
-                    Price:{" "}
-                    <span className="font-extralight">
-                      ${formatPrice(product.price)}
-                    </span>
-                  </p>
-                  <p className="font-semibold text-sm">
-                    Cost Price:{" "}
-                    <span className="font-extralight">
-                      ${formatPrice(product.costPrice)}
-                    </span>
-                  </p>
-                </div>
-              ))}
             <div className="">
               <label
                 htmlFor="soldPrice"
@@ -237,7 +188,7 @@ export function ModalAddStock(props: ModalAddStockProps) {
                 {!loading ? (
                   <>
                     <Plus size={20} />
-                    <span>Add Stock</span>
+                    <span>Edit Stock</span>
                   </>
                 ) : (
                   <Loader />

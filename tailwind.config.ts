@@ -19,6 +19,7 @@ const config: Config = {
         colorBorder: "var(--color-border)",
         inputBackground: "var(--input-background)",
         hoverButtons: "var(--hover-buttons)",
+        headerTable: "var(--header-table)",
       },
       animation: {
         "bounce-slow": "bounce 1s ease-in-out infinite",
