@@ -19,7 +19,7 @@ const ClientSchema: Schema = new Schema(
     lastname: { type: String },
     dni: { type: String },
     email: { type: String },
-    phone: { type: String, required: true },
+    phone: { type: String, required: true, unique: true },
     address: { type: String },
     city: { type: String, required: true },
     state: { type: String, required: true },

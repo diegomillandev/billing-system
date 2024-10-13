@@ -33,7 +33,7 @@ export async function PUT(
       }
     }
 
-    if (dataClient.email) {
+    if (dataClient.email?.trim() && dataClient.email !== "") {
       if (client.email !== dataClient.email) {
         const emailExists: IClient | null = await Client.findOne({
           email: dataClient.email,
