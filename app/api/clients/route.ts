@@ -2,12 +2,24 @@ import { connectDB } from "@/db/mongoose";
 import Client, { IClient } from "@/models/Client.model";
 import { NextResponse } from "next/server";
 
+interface searchConditionsArray {
+  phone: IClient["phone"];
+  email?: IClient["email"];
+}
+
 export async function POST(req: Request) {
   await connectDB();
   try {
     const dataClient: IClient = await req.json();
+    const phone: IClient["phone"] = dataClient.phone;
+    const email: IClient["email"] = dataClient.email;
+    const searchConditions: searchConditionsArray[] = [{ phone }];
+
+    if (email) {
+      searchConditions.push({ phone, email });
+    }
     const clientExists = await Client.findOne({
-      $or: [{ phone: dataClient.phone }, { email: dataClient.email }],
+      $or: searchConditions,
     });
 
     // check if client exists
@@ -21,7 +33,6 @@ export async function POST(req: Request) {
     // create new client
     const client = new Client(dataClient);
     await client.save();
-    console.log(client);
     return NextResponse.json({ message: "Client created" }, { status: 201 });
   } catch (error) {
     console.log(error);

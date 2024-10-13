@@ -1,5 +1,5 @@
 import { HeaderPage } from "@/components/Shared/HeaderPage";
-import { ModalAddClient } from "./components/ModalAddClient";
+import TableClients from "./components/TableClients/TableClients";
 
 const routes = [
   { name: "Home", href: "/" },
@@ -15,7 +15,7 @@ export default function ClientsPage() {
         buttonText="Add client"
         query="newClient=true"
       />
-      <ModalAddClient />
+      <TableClients />
     </>
   );
 }

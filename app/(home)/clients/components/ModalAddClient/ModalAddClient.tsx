@@ -8,7 +8,11 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Loader } from "@/components/Loader";
 
-export function ModalAddClient() {
+interface ModalCLientProps {
+  handleReload: () => void;
+}
+
+export function ModalAddClient({ handleReload }: ModalCLientProps) {
   const [loading, setLoading] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -35,6 +39,7 @@ export function ModalAddClient() {
   } = useForm({ defaultValues: initial });
 
   const closeModal = () => {
+    handleReload();
     reset();
     const url = `${pathname}`;
     router.push(url);
@@ -42,7 +47,6 @@ export function ModalAddClient() {
 
   const onSubmit = async (data: ClientForm) => {
     setLoading(true);
-
     try {
       const response: Response = await fetch("/api/clients", {
         method: "POST",
@@ -55,6 +59,7 @@ export function ModalAddClient() {
       if (response.ok) {
         setLoading(false);
         toast.success(message);
+        closeModal();
         reset();
         const url = `${pathname}`;
         router.push(url);
@@ -123,7 +128,7 @@ export function ModalAddClient() {
                       }
                   `}
                 placeholder="Enter client lastname"
-                {...register("lastname", { required: true })}
+                {...register("lastname")}
               />
             </div>
             <div className="">
@@ -144,7 +149,7 @@ export function ModalAddClient() {
                       }
                   `}
                 placeholder="Enter client email"
-                {...register("email", { required: true })}
+                {...register("email")}
               />
             </div>
             <div className="">
@@ -186,7 +191,7 @@ export function ModalAddClient() {
                       }
                   `}
                 placeholder="Enter client DNI"
-                {...register("dni", { required: true })}
+                {...register("dni")}
               />
             </div>
             <div className="">
@@ -207,7 +212,7 @@ export function ModalAddClient() {
                       }
                   `}
                 placeholder="Enter client address"
-                {...register("address", { required: true })}
+                {...register("address")}
               />
             </div>
             <div className="">

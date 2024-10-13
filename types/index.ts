@@ -1,4 +1,5 @@
 import { z } from "zod";
+import Client from "../models/Client.model";
 
 //  category model
 export const CategorySchema = z.object({
@@ -72,3 +73,48 @@ export const StockSelect = z.array(
 );
 export type Stock = z.infer<typeof StockChema>;
 export type StockForm = Pick<Stock, "productId" | "quantity">;
+
+// user client
+const ClientSchema = z.object({
+  _id: z.string(),
+  name: z.string(),
+  lastname: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string(),
+  dni: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string(),
+  state: z.string(),
+  buys: z.number(),
+  observations: z.string().optional(),
+});
+
+export const ClientFetch = z.array(
+  ClientSchema.pick({
+    _id: true,
+    name: true,
+    lastname: true,
+    email: true,
+    phone: true,
+    dni: true,
+    address: true,
+    city: true,
+    state: true,
+    buys: true,
+    observations: true,
+  })
+);
+
+export type Client = z.infer<typeof ClientSchema>;
+export type ClientForm = Pick<
+  Client,
+  | "name"
+  | "lastname"
+  | "email"
+  | "phone"
+  | "dni"
+  | "address"
+  | "city"
+  | "state"
+  | "observations"
+>;
