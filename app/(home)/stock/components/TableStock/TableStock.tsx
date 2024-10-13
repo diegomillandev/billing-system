@@ -69,7 +69,7 @@ export function TableStock() {
         <div className="relative w-12/12 md:w-2/4 mb-5 flex items-center gap-x-2">
           <input
             type="text"
-            placeholder="Search Product"
+            placeholder="Search Stock"
             className="w-11/12 p-2 border border-colorBorder bg-backgroundBox rounded focus:outline-none focus:ring-1 focus:ring-blue-600"
             onChange={(e) => setSearch(e.target.value)}
             value={search}

@@ -5,15 +5,31 @@ import { Client, ClientFetch } from "@/types";
 import { useEffect, useState } from "react";
 import { Loader } from "@/components/Loader";
 import { Trash2 } from "lucide-react";
+import { ModalEditClient } from "../ModalEditClient";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function TableClients() {
   const [loading, setLoading] = useState(false);
   const [reload, setReload] = useState(false);
+  const [editClient, setEditClient] = useState<Client | null>(null);
   const { search, setSearch, filteredData, setDataProcesing } =
     useSearch<Client>();
 
+  const patname = usePathname();
+  const router = useRouter();
+
   const handleReload = () => {
     setReload(!reload);
+  };
+
+  const handleEdit = (client: Client) => {
+    const newRoute = `${patname}?editClient=${client._id}`;
+    router.push(newRoute);
+    setEditClient(client);
+  };
+
+  const handleResetEdit = () => {
+    setEditClient(null);
   };
 
   const fetchClients = async () => {
@@ -49,7 +65,7 @@ export default function TableClients() {
         <div className="relative w-12/12 md:w-2/4 mb-5 flex items-center gap-x-2">
           <input
             type="text"
-            placeholder="Search Product"
+            placeholder="Search Clients"
             className="w-11/12 p-2 border border-colorBorder bg-backgroundBox rounded focus:outline-none focus:ring-1 focus:ring-blue-600"
             onChange={(e) => setSearch(e.target.value)}
             value={search}
@@ -117,12 +133,12 @@ export default function TableClients() {
                       </span>
                     </th>
                     <td className="px-6 py-4 ">
-                      <button
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                        onClick={() => {}}
+                      <div
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+                        onClick={() => handleEdit(client)}
                       >
                         Edit
-                      </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -132,6 +148,13 @@ export default function TableClients() {
         )}
       </main>
       <ModalAddClient handleReload={handleReload} />
+      {editClient && (
+        <ModalEditClient
+          handleReload={handleReload}
+          editClient={editClient}
+          handleResetEdit={handleResetEdit}
+        />
+      )}
     </>
   );
 }
