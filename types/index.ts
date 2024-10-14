@@ -156,12 +156,11 @@ const OrderProductSchema = z.object({
   _id: z.string(),
 });
 
-const OrderSchema = z.object({
+export const OrderSchema = z.object({
   _id: z.string(),
   clientId: ClientSchema,
   products: z.array(OrderProductSchema),
   invoiceNumber: z.string(),
-  __v: z.number(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });
