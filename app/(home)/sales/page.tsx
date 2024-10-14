@@ -1,5 +1,5 @@
 import { HeaderPage } from "@/components/Shared/HeaderPage";
-import { ModalAddSales } from "./components/ModalAddSales";
+import { TableSales } from "./components/TableSales";
 
 const routes = [
   { name: "Home", href: "/" },
@@ -15,7 +15,7 @@ export default function SalesPage() {
         buttonText="Add sale"
         query="newAddSales=true"
       />
-      <ModalAddSales />
+      <TableSales />
     </>
   );
 }

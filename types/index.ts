@@ -36,6 +36,8 @@ const ProductSchema = z.object({
   categoryId: CategorySchema.or(z.string()),
   stock: z.string(),
   description: z.string(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 });
 
 export const ProductSelect = z.array(
@@ -87,6 +89,8 @@ const ClientSchema = z.object({
   state: z.string(),
   buys: z.number(),
   observations: z.string().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 });
 
 export const ClientFetch = z.array(
@@ -144,3 +148,23 @@ export type ProductSaleForm = Pick<
   ProductSale,
   "productId" | "quantity" | "total"
 >;
+
+const OrderProductSchema = z.object({
+  productId: ProductSchema,
+  quantity: z.number(),
+  total: z.number(),
+  _id: z.string(),
+});
+
+const OrderSchema = z.object({
+  _id: z.string(),
+  clientId: ClientSchema,
+  products: z.array(OrderProductSchema),
+  invoiceNumber: z.string(),
+  __v: z.number(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
+export const OrdersSchema = z.array(OrderSchema);
+export type Order = z.infer<typeof OrderSchema>;

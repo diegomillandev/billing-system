@@ -13,8 +13,13 @@ import { Plus, Trash2, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
-export function ModalAddSales() {
+interface ModalAddSalesProps {
+  handleReload: () => void;
+}
+
+export function ModalAddSales({ handleReload }: ModalAddSalesProps) {
   const [loading, setLoading] = useState(false);
   const [clients, setClients] = useState<Client[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -32,6 +37,7 @@ export function ModalAddSales() {
   const query = searhcParams.get("newAddSales");
 
   const closeModal = () => {
+    handleReload();
     clearsStates();
     const url = `${pathname}`;
     router.push(url);
@@ -94,7 +100,7 @@ export function ModalAddSales() {
       const res = await fetch("/api/clients");
       const data = ClientFetch.safeParse(await res.json());
       if (data.success) {
-        setClients(data.data);
+        setClients(data.data as Client[]);
       }
       setLoading(false);
     } catch (error) {
@@ -124,7 +130,13 @@ export function ModalAddSales() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    if (!showProductSale?.length) {
+      toast.error("You must add at least one product to the sale");
+      return;
+    }
+
+    setLoading(true);
     const receipt = {
       clientId: clientId,
       products: showProductSale?.map((productSale) => ({
@@ -133,13 +145,41 @@ export function ModalAddSales() {
         total: productSale.total,
       })),
     };
-    console.log(receipt);
+
+    try {
+      const res = await fetch("/api/sales", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(receipt),
+      });
+
+      const data = await res.json();
+      if (data.message && res.ok) {
+        toast.success(data.message);
+        setLoading(false);
+        closeModal();
+      } else {
+        toast.error(data.message);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      toast.error("An error occurred");
+    }
   };
 
   useEffect(() => {
     fetchClients();
     fetchProducts();
   }, []);
+
+  const totalSale = showProductSale?.reduce(
+    (acc, productSale) => acc + productSale.total,
+    0
+  );
 
   useEffect(() => {
     if (clientId) {
@@ -291,15 +331,14 @@ export function ModalAddSales() {
               <div className="col-span-6 md:col-span-4">
                 <input
                   type="number"
-                  placeholder="Quantity"
+                  placeholder="quantity"
                   className={`w-full rounded-sm border py-1.5 ps-4 focus:outline-none bg-inputBackground placeholder:text-gray-500 placeholder:font-light 
                       ${
-                        errors.clientId
+                        errors.quantity
                           ? "border-red-500"
                           : "border-colorBorder focus:border-blue-700"
                       }
                   `}
-                  {...register("quantity")}
                   value={quantity}
                   onChange={(e) =>
                     setQuantity(
@@ -318,8 +357,10 @@ export function ModalAddSales() {
                 </button>
               </div>
             </div>
-            <hr className="h-px bg-colorBorder border-0 " />
-            <div className="text-right text-xl font-bold">Total: $40000</div>
+            <hr className="h-px bg-colorBorder border-0" />
+            {totalSale! > 0 && (
+              <div className="text-right text-xl font-bold">${totalSale}</div>
+            )}
             <div className="">
               <button
                 type="submit"
