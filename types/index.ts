@@ -118,3 +118,29 @@ export type ClientForm = Pick<
   | "state"
   | "observations"
 >;
+
+// product sale
+
+const ProductSaleSchema = z.object({
+  _id: z.string(),
+  productId: ProductSchema,
+  quantity: z.number(),
+  price: z.number(),
+  total: z.number(),
+});
+
+export const ProductSaleFetch = z.array(
+  ProductSaleSchema.pick({
+    _id: true,
+    productId: true,
+    quantity: true,
+    price: true,
+    total: true,
+  })
+);
+
+export type ProductSale = z.infer<typeof ProductSaleSchema>;
+export type ProductSaleForm = Pick<
+  ProductSale,
+  "productId" | "quantity" | "total"
+>;
