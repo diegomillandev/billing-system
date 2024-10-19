@@ -60,7 +60,7 @@ export type ProductForm = Pick<
 // stock model
 const StockChema = z.object({
   _id: z.string(),
-  productId: ProductSchema,
+  productId: ProductSchema.or(z.string()),
   quantity: z.number(),
   sold: z.number(),
   createdAt: z.string().datetime(),
