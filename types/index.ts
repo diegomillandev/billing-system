@@ -167,3 +167,18 @@ export const OrderSchema = z.object({
 
 export const OrdersSchema = z.array(OrderSchema);
 export type Order = z.infer<typeof OrderSchema>;
+
+//  user model
+export const UserSchema = z.object({
+  _id: z.string(),
+  name: z.string().optional(),
+  lastname: z.string().optional(),
+  email: z.string(),
+  password: z.string(),
+  role: z.string().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
+export type User = z.infer<typeof UserSchema>;
+export type userForm = Pick<User, "email" | "password">;

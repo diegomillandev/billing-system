@@ -224,7 +224,7 @@ export function ModalAddSales({ handleReload }: ModalAddSalesProps) {
                 <option value="">Select client</option>
                 {clients.map((client) => (
                   <option key={client._id} value={client._id}>
-                    {client.name}
+                    {client.name} {client.lastname}
                   </option>
                 ))}
               </select>

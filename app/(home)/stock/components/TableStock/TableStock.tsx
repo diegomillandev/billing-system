@@ -109,7 +109,7 @@ export function TableStock() {
               <tbody>
                 {filteredData.map((stock) => (
                   <tr
-                    className="border-b border-colorBorder bg-backgroundBox"
+                    className="border-b border-colorBorder bg-backgroundBox hover:bg-hoverRowTalble"
                     key={stock._id}
                   >
                     <th

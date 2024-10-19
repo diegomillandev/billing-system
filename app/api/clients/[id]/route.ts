@@ -55,7 +55,7 @@ export async function PUT(
     client.address = dataClient.address;
     client.city = dataClient.city;
     client.state = dataClient.state;
-    client.buys = dataClient.buys;
+    client.buys = client.buys;
     client.observations = dataClient.observations;
 
     await client.save();

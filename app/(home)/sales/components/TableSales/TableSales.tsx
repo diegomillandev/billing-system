@@ -87,7 +87,7 @@ export function TableSales() {
                     Total
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Date
+                    Date of sale
                   </th>
                   <th scope="col" className="px-6 py-3 text-center">
                     Action
@@ -97,7 +97,7 @@ export function TableSales() {
               <tbody>
                 {filteredData.map((sale) => (
                   <tr
-                    className="border-b border-colorBorder bg-backgroundBox"
+                    className="border-b border-colorBorder bg-backgroundBox hover:bg-hoverRowTalble"
                     key={sale._id}
                   >
                     <th

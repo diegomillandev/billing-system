@@ -8,7 +8,6 @@ export async function POST(req: Request) {
 
   try {
     const dataProduct: IProduct = await req.json();
-
     const categoryExists = await Category.findById(dataProduct.categoryId);
 
     if (!categoryExists) {

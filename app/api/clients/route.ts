@@ -3,7 +3,7 @@ import Client, { IClient } from "@/models/Client.model";
 import { NextResponse } from "next/server";
 
 interface searchConditionsArray {
-  phone: IClient["phone"];
+  phone?: IClient["phone"];
   email?: IClient["email"];
 }
 
@@ -16,12 +16,11 @@ export async function POST(req: Request) {
     const searchConditions: searchConditionsArray[] = [{ phone }];
 
     if (email) {
-      searchConditions.push({ phone, email });
+      searchConditions.push({ email });
     }
     const clientExists = await Client.findOne({
       $or: searchConditions,
     });
-
     // check if client exists
     if (clientExists) {
       return NextResponse.json(
@@ -43,7 +42,7 @@ export async function POST(req: Request) {
 export async function GET() {
   await connectDB();
   try {
-    const clients = await Client.find();
+    const clients = await Client.find().sort({ name: 1 });
     return NextResponse.json(clients, { status: 200 });
   } catch (error) {
     console.log(error);

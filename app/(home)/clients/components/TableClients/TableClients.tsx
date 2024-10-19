@@ -38,7 +38,7 @@ export default function TableClients() {
       const res = await fetch("/api/clients");
       const data = ClientFetch.safeParse(await res.json());
       if (data.success) {
-        setDataProcesing(data.data);
+        setDataProcesing(data.data as Client[]);
       }
       setLoading(false);
     } catch (error) {
@@ -105,14 +105,16 @@ export default function TableClients() {
               <tbody>
                 {filteredData.map((client) => (
                   <tr
-                    className="border-b border-colorBorder bg-backgroundBox"
+                    className="border-b border-colorBorder bg-backgroundBox hover:bg-hoverRowTalble"
                     key={client._id}
                   >
-                    <th
+                    <td
                       scope="row"
-                      className="px-6 py-4 font-medium text-colorText flex flex-col"
+                      className={`px-6 py-4 font-medium text-colorText 
+                      ${client.email && "flex flex-col"}
+                        `}
                     >
-                      <span>
+                      <span className="">
                         {client.name} {client.lastname}
                       </span>
                       {client.email && (
@@ -120,7 +122,7 @@ export default function TableClients() {
                           {client.email}
                         </span>
                       )}
-                    </th>
+                    </td>
                     <td className="px-6 py-4">{client.phone}</td>
                     <td className="px-6 py-4">{client.buys}</td>
                     <th

@@ -20,6 +20,7 @@ const config: Config = {
         inputBackground: "var(--input-background)",
         hoverButtons: "var(--hover-buttons)",
         headerTable: "var(--header-table)",
+        hoverRowTalble: "var(--hover-row-table)",
       },
       animation: {
         "bounce-slow": "bounce 1s ease-in-out infinite",

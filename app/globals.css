@@ -20,6 +20,7 @@
 
   /* hovers */
   --hover-buttons: #f0f2f5;
+  --hover-row-table: #f0f2f5;
 }
 
 .dark {
@@ -34,6 +35,7 @@
   --input-background: #354250;
   --hover-buttons: #354250;
   --header-table: #1e2a36;
+  --hover-row-table: #1e2a36;
 }
 body {
   color: var(--color-text);
