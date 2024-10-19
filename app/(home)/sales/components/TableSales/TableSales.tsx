@@ -1,6 +1,5 @@
 "use client";
 import { useSearch } from "@/hooks/useSearch";
-import { format } from "@formkit/tempo";
 import { Order, OrdersSchema } from "@/types";
 import { useEffect, useState } from "react";
 import { Loader } from "@/components/Loader";
@@ -114,12 +113,7 @@ export function TableSales() {
                       <span>${calculateTotal(sale.products)}</span>
                     </td>
                     <td className="px-6 py-4">
-                      <span>
-                        {format(sale.createdAt, {
-                          date: "full",
-                          time: "short",
-                        })}
-                      </span>
+                      <span>{sale.saleDate.split("-").join("/")}</span>
                     </td>
                     <td className="px-6 py-4 flex justify-center">
                       <Link

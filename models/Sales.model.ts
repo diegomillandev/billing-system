@@ -28,6 +28,7 @@ interface ISale extends Document {
   clientId: Types.ObjectId;
   products: IProduct[];
   invoiceNumber: string;
+  saleDate: string;
 }
 
 const SaleSchema = new Schema(
@@ -45,6 +46,10 @@ const SaleSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+    },
+    saleDate: {
+      type: String,
+      required: true,
     },
   },
   {

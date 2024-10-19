@@ -1,14 +1,15 @@
 "use client";
-
 import { User } from "@/types";
 import { signOut } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { FaUser } from "react-icons/fa";
 
 interface UserProps {
-  user: User;
+  user: User | null;
 }
+
 export function UserButton({ user }: UserProps) {
+  console.log(user);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -47,9 +48,9 @@ export function UserButton({ user }: UserProps) {
         <div className="bg-backgroundBox border border-colorBorder absolute right-0 mt-1 top-full min-w-48">
           <div className="flex flex-col items-start px-3 py-2">
             <div className="text-sm font-normal capitalize">
-              {user.name} {user.lastname}
+              {user?.name} {user?.lastname}
             </div>
-            <div className="text-xs text-gray-400">{user.email}</div>
+            <div className="text-xs text-gray-400">{"user.email"}</div>
           </div>
           <hr className="h-px border border-colorBorder" />
           <button
