@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ModalAddStock } from "../ModalAddStock";
-import { Stock, StockSelect } from "@/types";
+import { Stock, StockFetch } from "@/types";
 import { useSearch } from "@/hooks/useSearch";
 import { Loader } from "@/components/Loader";
 import { formatPrice } from "@/utils";
@@ -41,7 +41,7 @@ export function TableStock() {
     if (!filteredData.length) setLoading(true);
     try {
       const response = await fetch("/api/stock");
-      const data = StockSelect.safeParse(await response.json());
+      const data = StockFetch.safeParse(await response.json());
       if (data.success) {
         setDataProcesing(data.data);
       }

@@ -36,8 +36,8 @@ const ProductSchema = z.object({
   categoryId: CategorySchema.or(z.string()),
   stock: z.string(),
   description: z.string(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.string().datetime().optional(),
+  updatedAt: z.string().datetime().optional(),
 });
 
 export const ProductSelect = z.array(
@@ -60,19 +60,24 @@ export type ProductForm = Pick<
 // stock model
 const StockChema = z.object({
   _id: z.string(),
-  productId: ProductSchema.or(z.string()),
+  productId: ProductSchema,
   quantity: z.number(),
   sold: z.number(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 });
 
-export const StockSelect = z.array(
+export const StockFetch = z.array(
   StockChema.pick({
     _id: true,
     productId: true,
     quantity: true,
     sold: true,
+    createdAt: true,
+    updatedAt: true,
   })
 );
+
 export type Stock = z.infer<typeof StockChema>;
 export type StockForm = Pick<Stock, "productId" | "quantity">;
 
