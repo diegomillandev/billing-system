@@ -40,7 +40,6 @@ const handler = NextAuth({
         if (!isValid) {
           throw new Error("Invalid password");
         }
-
         return user;
       },
     }),

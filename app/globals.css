@@ -21,6 +21,7 @@
   /* hovers */
   --hover-buttons: #f0f2f5;
   --hover-row-table: #f0f2f5;
+  --hover-switch: #e5e7eb;
 }
 
 .dark {
@@ -36,6 +37,7 @@
   --hover-buttons: #354250;
   --header-table: #1e2a36;
   --hover-row-table: #1e2a36;
+  --hover-switch: #364250;
 }
 body {
   color: var(--color-text);

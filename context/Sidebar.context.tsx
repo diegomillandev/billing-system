@@ -11,7 +11,8 @@ export const AppContext = createContext<AppContextType>(null!);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
 
-  const toggleSidebar = () => setIsOpenSidebar(!isOpenSidebar);
+  const toggleSidebar = () =>
+    setIsOpenSidebar((prev) => (prev === false ? true : false));
 
   return (
     <AppContext.Provider value={{ isOpenSidebar, toggleSidebar }}>

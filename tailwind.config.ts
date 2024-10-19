@@ -21,6 +21,7 @@ const config: Config = {
         hoverButtons: "var(--hover-buttons)",
         headerTable: "var(--header-table)",
         hoverRowTalble: "var(--hover-row-table)",
+        hoverSwitch: "var(--hover-switch)",
       },
       animation: {
         "bounce-slow": "bounce 1s ease-in-out infinite",
