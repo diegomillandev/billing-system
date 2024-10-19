@@ -1,5 +1,6 @@
 import { HeaderPage } from "@/components/Shared/HeaderPage";
 import { TableSales } from "./components/TableSales";
+import { Suspense } from "react";
 
 const routes = [
   { name: "Home", href: "/" },
@@ -8,7 +9,7 @@ const routes = [
 
 export default function SalesPage() {
   return (
-    <>
+    <Suspense>
       <HeaderPage
         routes={routes}
         headerTitle="Sales"
@@ -16,6 +17,6 @@ export default function SalesPage() {
         query="newAddSales=true"
       />
       <TableSales />
-    </>
+    </Suspense>
   );
 }

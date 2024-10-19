@@ -1,5 +1,6 @@
 import { HeaderPage } from "@/components/Shared/HeaderPage";
 import { TableStock } from "./components/TableStock";
+import { Suspense } from "react";
 
 const routes = [
   { name: "Home", href: "/" },
@@ -8,7 +9,7 @@ const routes = [
 
 export default function StockPage() {
   return (
-    <>
+    <Suspense>
       <HeaderPage
         routes={routes}
         headerTitle="Stock"
@@ -16,6 +17,6 @@ export default function StockPage() {
         query="newStock=true"
       />
       <TableStock />
-    </>
+    </Suspense>
   );
 }

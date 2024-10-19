@@ -1,5 +1,6 @@
 import { HeaderPage } from "@/components/Shared/HeaderPage";
 import { WrapperProducts } from "./components/WrapperProducts";
+import { Suspense } from "react";
 
 const routes = [
   { name: "Home", href: "/" },
@@ -8,7 +9,7 @@ const routes = [
 
 export default function ProductsPage() {
   return (
-    <>
+    <Suspense>
       <HeaderPage
         routes={routes}
         headerTitle="Products"
@@ -17,6 +18,6 @@ export default function ProductsPage() {
         query="newProduct=true"
       />
       <WrapperProducts />
-    </>
+    </Suspense>
   );
 }
