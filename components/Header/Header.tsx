@@ -10,7 +10,7 @@ export async function Header() {
   const session = await getServerSession();
 
   if (!session || !session?.user?.email) {
-    return redirect("/login");
+    return redirect("/");
   }
   let user = null;
   try {
