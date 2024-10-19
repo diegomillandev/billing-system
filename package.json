@@ -2,8 +2,10 @@
   "name": "billing-system",
   "version": "0.1.0",
   "private": true,
+  "description": "Billing System",
+  "author": "Diego Millan",
   "scripts": {
-    "dev": "next dev  ",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

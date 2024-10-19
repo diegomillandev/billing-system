@@ -4,27 +4,17 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Plus, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Product, ProductSelect, StockForm } from "@/types";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader } from "@/components/Loader";
 import { formatPrice } from "@/utils";
-
-type StateMapType = {
-  [key: string]: Dispatch<SetStateAction<number>>;
-};
 
 interface ModalAddStockProps {
   handleReload: () => void;
 }
 
 export function ModalAddStock(props: ModalAddStockProps) {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState<number | string>(0);
   const [loading, setLoading] = useState(false);
   const [productId, setProductId] = useState("");
   const [showProduct, setShowProduct] = useState<Product[]>([]);
@@ -38,7 +28,7 @@ export function ModalAddStock(props: ModalAddStockProps) {
 
   const initial: StockForm = {
     productId: "",
-    quantity: quantity,
+    quantity: parseInt(quantity as string),
   };
 
   const {
@@ -59,13 +49,16 @@ export function ModalAddStock(props: ModalAddStockProps) {
   const setNumber = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    const stateMap: StateMapType = {
+    const stateMap: {
+      [key: string]: React.Dispatch<React.SetStateAction<string | number>>;
+    } = {
       quantity: setQuantity,
     };
+
     const setter = stateMap[name];
 
     if (setter) {
-      setter(value === "" ? 0 : parseInt(value));
+      setter(value === "" ? "" : parseInt(value));
     }
   };
 
@@ -223,7 +216,7 @@ export function ModalAddStock(props: ModalAddStockProps) {
                           : "border-colorBorder focus:border-blue-700"
                       }
                   `}
-                placeholder="Enter client DNI"
+                placeholder="Enter quantity"
                 {...register("quantity", { required: true })}
                 value={quantity}
                 onChange={(e) => setNumber(e)}
