@@ -1,5 +1,4 @@
 import { z } from "zod";
-import Client from "../models/Client.model";
 
 //  category model
 export const CategorySchema = z.object({
@@ -129,7 +128,6 @@ export type ClientForm = Pick<
 >;
 
 // product sale
-
 const ProductSaleSchema = z.object({
   _id: z.string(),
   productId: ProductSchema,
@@ -166,6 +164,7 @@ export const OrderSchema = z.object({
   clientId: ClientSchema,
   products: z.array(OrderProductSchema),
   invoiceNumber: z.string(),
+  saleDate: z.string(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });

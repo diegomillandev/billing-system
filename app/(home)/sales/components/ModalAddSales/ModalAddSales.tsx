@@ -21,6 +21,7 @@ interface ModalAddSalesProps {
 
 export function ModalAddSales({ handleReload }: ModalAddSalesProps) {
   const [loading, setLoading] = useState(false);
+  const [saleDate, setSaleDate] = useState("");
   const [clients, setClients] = useState<Client[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [quantity, setQuantity] = useState(0);
@@ -144,8 +145,8 @@ export function ModalAddSales({ handleReload }: ModalAddSalesProps) {
         quantity: productSale.quantity,
         total: productSale.total,
       })),
+      saleDate: saleDate,
     };
-
     try {
       const res = await fetch("/api/sales", {
         method: "POST",
@@ -356,6 +357,20 @@ export function ModalAddSales({ handleReload }: ModalAddSalesProps) {
                   <span>Add</span>
                 </button>
               </div>
+            </div>
+            <div className="">
+              <input
+                type="date"
+                className={`w-full rounded-sm border py-2 ps-4 focus:outline-none bg-inputBackground placeholder:text-gray-500 placeholder:font-light 
+                      ${
+                        errors.date
+                          ? "border-red-500"
+                          : "border-colorBorder focus:border-blue-700"
+                      }
+                  `}
+                value={saleDate}
+                onChange={(e) => setSaleDate(e.target.value)}
+              />
             </div>
             <hr className="h-px bg-colorBorder border-0" />
             {totalSale! > 0 && (

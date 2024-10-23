@@ -1,5 +1,4 @@
 import { Order } from "@/types";
-import { format } from "@formkit/tempo";
 
 interface InvoiceProps {
   order: Order;
@@ -10,7 +9,7 @@ export function Invoice({ order }: InvoiceProps) {
     const total = products.reduce((acc, product) => acc + product.total, 0);
     return total;
   }
-  const { clientId, products, invoiceNumber, createdAt } = order;
+  const { clientId, products, invoiceNumber } = order;
   return (
     <div className="bg-backgroundBox p-8 shadow-lg max-w-[550px] mx-auto mt-10">
       <h1 className="text-3xl font-medium mb-6 border-t-4 border-colorBorder pt-2 inline-flex">
@@ -21,15 +20,12 @@ export function Invoice({ order }: InvoiceProps) {
         <h2 className="text-xl font-semibold">Invoice Information</h2>
         <p className="flex justify-between">
           <span className="font-medium">Invoice Number:</span>
-          <span className="font-extralight">#{invoiceNumber}</span>
+          <span className="font-extralight"># {invoiceNumber}</span>
         </p>
         <p className="flex justify-between">
           <span className="font-medium">Date of creation:</span>
           <span className="font-extralight">
-            {format(createdAt, {
-              date: "full",
-              time: "short",
-            })}
+            {order.saleDate.split("-").join("/")}
           </span>
         </p>
       </div>
@@ -57,7 +53,7 @@ export function Invoice({ order }: InvoiceProps) {
           <thead>
             <tr>
               <th className="text-left">Product</th>
-              <th className="text-right">Quantity</th>
+              <th className="text-center">Quantity</th>
               <th className="text-right">Total</th>
             </tr>
           </thead>
@@ -65,7 +61,7 @@ export function Invoice({ order }: InvoiceProps) {
             {products.map((product, index) => (
               <tr key={index}>
                 <td>{product.productId.name}</td>
-                <td className="text-right">{product.quantity}</td>
+                <td className="text-center">{product.quantity}</td>
                 <td className="text-right">${product.total}</td>
               </tr>
             ))}

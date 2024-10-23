@@ -43,3 +43,13 @@ body {
   color: var(--color-text);
   background: var(--background);
 }
+::-webkit-scrollbar {
+  display: none;
+}
+html {
+  scrollbar-width: none; /* Opcional: puedes usar "thin" o "auto" */
+  scrollbar-color: transparent transparent; /* Opcional: color de la barra y del fondo */
+}
+body {
+  -ms-overflow-style: none; /* Oculta la barra de desplazamiento */
+}
