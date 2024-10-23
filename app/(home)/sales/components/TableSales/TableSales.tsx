@@ -24,7 +24,6 @@ export function TableSales() {
       const data = OrdersSchema.safeParse(await res.json());
       if (data.success) {
         setDataProcesing(data.data);
-        console.log(data.data);
       }
       setLoading(false);
     } catch (error) {

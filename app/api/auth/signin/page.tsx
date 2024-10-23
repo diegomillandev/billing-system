@@ -35,7 +35,6 @@ export default function SignInPage() {
         setLoading(false);
         return router.push("/");
       }
-      console.log(response);
       toast.error("An error occurred");
       setLoading(false);
     } catch (error) {
