@@ -9,7 +9,6 @@ interface UserProps {
 }
 
 export function UserButton({ user }: UserProps) {
-  console.log(user);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
